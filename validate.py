@@ -7,7 +7,7 @@ from imutils.feature import FeatureDetector_create, DescriptorExtractor_create
 detector = FeatureDetector_create('SIFT')
 descriptor = DescriptorExtractor_create('RootSIFT')
 dad = DetectAndDescribe(detector, descriptor)
-im = ImageMatcher(dad, glob.glob('masks' + "/*.jpg"))
+im = ImageMatcher(dad, glob.glob('templates' + "/*.jpg"))
 
 # Loop over all the sample images
 for f in glob.glob('images' + "/*.jpg"):
@@ -16,20 +16,20 @@ for f in glob.glob('images' + "/*.jpg"):
     grayImage = cv2.cvtColor(queryImage, cv2.COLOR_BGR2GRAY)
 
     # Matching score for each mask file
-    masks = im.search(grayImage)
-    print(masks)
+    templates = im.search(grayImage)
+    print(templates)
 
-    if len(masks) != 0:
+    if len(templates) != 0:
 
         # Show the matched keypoints
-        mask = cv2.imread(masks[0][1])
-        visImage = im.show(queryImage, mask, width=800)
+        template = cv2.imread(templates[0][1])
+        visImage = im.show(queryImage, template, width=800)
 
         # Transform image source
-        transformedM = im.transform(mask, queryImage, width=800)
-        transformedI = im.transform(queryImage, mask, width=800)
+        transformedT = im.transform(template, queryImage, width=800)
+        transformedI = im.transform(queryImage, template, width=800)
 
         cv2.imshow('Show', visImage)
-        cv2.imshow('Transformed Mask', transformedM)
+        cv2.imshow('Transformed template', transformedT)
         cv2.imshow('Transformed Image', transformedI)
         cv2.waitKey(0)
