@@ -1,0 +1,38 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "generate_mask.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": [
+                "-t",
+                "templates/template1.jpg",
+                "-o",
+                "masks",
+                "-c",
+                "0,106,254"
+            ]
+        },
+        {
+            "name": "extract_fields.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": [
+                "-t",
+                "templates/template1.jpg",
+                "-m",
+                "masks",
+                "-i",
+                "images/template1-image4.jpg"
+            ],
+        }
+    ]
+}

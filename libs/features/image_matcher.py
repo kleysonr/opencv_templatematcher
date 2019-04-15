@@ -139,7 +139,7 @@ class ImageMatcher:
         """
 
         # Resize images for the same size
-        (queryImage, maskImage) = self.doImagesSameSize(queryImage, maskImage, width=width)
+        (queryImage, maskImage, _) = self.doImagesSameSize(queryImage, maskImage, width=width)
 
         # Convert images to grayscale
         grayImage = self.getGray(queryImage)
@@ -174,7 +174,7 @@ class ImageMatcher:
 
         return vis
 
-    def transform(self, imageA, imageB, width=None):
+    def transform(self, imageA, imageB, mask=None, width=None):
         """[summary]
         
         Arguments:
@@ -182,6 +182,7 @@ class ImageMatcher:
             imageB {[type]} -- [description]
         
         Keyword Arguments:
+            mask {[type]} -- [description] (default: {None})
             width {[type]} -- [description] (default: {None})
         
         Returns:
@@ -189,7 +190,7 @@ class ImageMatcher:
         """
 
         # Resize images for the same size
-        (imageA, imageB) = self.doImagesSameSize(imageA, imageB, width=width)
+        (imageA, imageB, mask) = self.doImagesSameSize(imageA, imageB, mask=mask, width=width)
 
         # Convert images to grayscale
         grayA = self.getGray(imageA)
@@ -216,13 +217,18 @@ class ImageMatcher:
             (h, _) = cv2.findHomography(ptsA, ptsB, cv2.RANSAC, 4.0)
 
             # Apply the H matrix to the src image
-            new_image = cv2.warpPerspective(imageA, h, (imageB.shape[1], imageB.shape[0]))
+            _img = imageA
+
+            if mask is not None:
+                _img = mask
+
+            new_image = cv2.warpPerspective(_img, h, (imageB.shape[1], imageB.shape[0]))
 
             return new_image
 
         return None
 
-    def doImagesSameSize(self, imageA, imageB, width=None):
+    def doImagesSameSize(self, imageA, imageB, mask=None, width=None):
         """[summary]
         
         Arguments:
@@ -230,6 +236,7 @@ class ImageMatcher:
             imageB {[type]} -- [description]
         
         Keyword Arguments:
+            mask {[type]} -- [description] (default: {None})
             width {[type]} -- [description] (default: {None})
         
         Returns:
@@ -243,17 +250,30 @@ class ImageMatcher:
         imageB = imutils.resize(imageB, width=width)
         imageA = imutils.resize(imageA, width=width)
 
+        if mask is not None:
+            mask = imutils.resize(mask, width=width)
+
         if imageA.shape[0] > imageB.shape[0]:
             _img = np.zeros(imageA.shape, dtype='uint8')
             _img[0:imageB.shape[0], 0:imageB.shape[1]] = imageB
             imageB = _img
+
+            if mask is not None:
+                _mask = np.zeros(imageA.shape[:2], dtype='uint8')
+                _mask[0:mask.shape[0], 0:mask.shape[1]] = mask
+                mask = _mask
 
         else:
             _img = np.zeros(imageB.shape, dtype='uint8')
             _img[0:imageA.shape[0], 0:imageA.shape[1]] = imageA
             imageA = _img
 
-        return (imageA, imageB)
+            if mask is not None:
+                _mask = np.zeros(imageB.shape[:2], dtype='uint8')
+                _mask[0:mask.shape[0], 0:mask.shape[1]] = mask
+                mask = _mask
+
+        return (imageA, imageB, mask)
 
     def getGray(self, image):
         """[summary]
