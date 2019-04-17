@@ -1,2 +1,1 @@
-# opencvimagematcher
-OpenCV Image Matcher
+# OpenCV Template Matcher
