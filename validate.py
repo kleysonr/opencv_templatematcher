@@ -1,6 +1,6 @@
 import cv2
 import glob
-from libs.features import DetectAndDescribe, ImageMatcher
+from templatematcher.features import DetectAndDescribe, ImageMatcher
 from imutils.feature import FeatureDetector_create, DescriptorExtractor_create
 
 # Initialize the keypoint detector, local invariant descriptor and descriptor

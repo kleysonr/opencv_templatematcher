@@ -3,10 +3,10 @@
 
 from setuptools import setup, find_packages
 
-setup(name='imagematcher',
+setup(name='templatematcher',
       version='0.0.0',
-      description='OpenCV Image Matcher',
-      url='https://github.com/kleysonr/opencvimagematcher',
+      description='OpenCV Template Matcher',
+      url='https://github.com/kleysonr/opencv_templatematcher',
       author='Kleyson Rios',
       author_email='kleysonr@gmail.com',
       packages=find_packages(),

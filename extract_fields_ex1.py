@@ -5,7 +5,7 @@ import glob
 import numpy as np
 import imutils
 from imutils.feature import FeatureDetector_create, DescriptorExtractor_create
-from libs.features import DetectAndDescribe, ImageMatcher
+from templatematcher.features import DetectAndDescribe, ImageMatcher
 
 """
 This example will not change the image base to avoid any kind of distortion after

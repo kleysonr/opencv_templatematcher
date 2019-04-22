@@ -5,7 +5,7 @@ import glob
 import numpy as np
 import imutils
 from imutils.feature import FeatureDetector_create, DescriptorExtractor_create
-from libs.features import DetectAndDescribe, ImageMatcher
+from templatematcher.features import DetectAndDescribe, ImageMatcher
 
 """
 In this example distortion in the image is acceptable after a perspective change. 
